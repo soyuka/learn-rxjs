@@ -5,11 +5,14 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
-    <div class="container">
-      Get continents
-      <input id="type-ahead" />
-      <hr />
-      <div id="output"></div>
+    <div class="progress-container">
+      <div class="progress" id="progress"></div>
     </div>
+
+    <button id="load">
+      Load Data
+    </button>
+
+    <div id="data"></div>
   </body>
 </html>
