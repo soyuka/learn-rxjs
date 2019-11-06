@@ -1,15 +1,27 @@
 import './style.css'
-import { fromEvent } from 'rxjs'
-import { map, scan } from 'rxjs/operators'
+import { fromEvent, merge } from 'rxjs'
+import { map, buffer, throttleTime, filter } from 'rxjs/operators'
 
-var button = document.querySelector('.this');
-var click$ = fromEvent(button, 'click');
+var button = document.querySelector('.this')
+var clicks$ = fromEvent(button, 'click')
 
-var stream = click$.pipe(
-    map(e => 1),
-    scan((acc, curr) => acc + curr, 0)
-)
+var singleClickStream = clicks$
+  .pipe(
+    buffer(clicks$.pipe(throttleTime(250))),
+    map(list => list.length),
+    filter(x => x === 1)
+  )
 
-stream.subscribe((count) => {
-  document.querySelector('h2').textContent = `${count} times`;
-})
+var multiClickStream = clicks$
+  .pipe(
+    buffer(clicks$.pipe(throttleTime(500))),
+    map(list => list.length),
+    filter(num => num > 1)
+  )
+
+singleClickStream.subscribe(function (event) {
+    document.querySelector('h2').textContent = 'click'
+});
+multiClickStream.subscribe(function (numclicks) {
+    document.querySelector('h2').textContent = `${numclicks}x click`
+});
