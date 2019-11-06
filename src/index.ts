@@ -1,15 +1,35 @@
-import './style.css'
-import { fromEvent } from 'rxjs'
-import { map, scan } from 'rxjs/operators'
+// RxJS v6+
+import { fromEvent, of } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  switchMap,
+  tap
+} from 'rxjs/operators';
 
-var button = document.querySelector('.this');
-var click$ = fromEvent(button, 'click');
+const getContinents = (keys: string) =>
+  [
+    'africa',
+    'antarctica',
+    'asia',
+    'australia',
+    'europe',
+    'north america',
+    'south america'
+  ].filter(e => e.indexOf(keys.toLowerCase()) > -1);
 
-var stream = click$.pipe(
-    map(e => 1),
-    scan((acc, curr) => acc + curr, 0)
-)
+const fakeContinentsRequest = (keys: string) =>
+  of(getContinents(keys)).pipe(
+    tap(_ => console.log(`API CALL at ${new Date()}`))
+  );
 
-stream.subscribe((count) => {
-  document.querySelector('h2').textContent = `${count} times`;
-})
+fromEvent(document.getElementById('type-ahead'), 'keyup')
+  .pipe(
+    debounceTime(200),
+    map((e: any) => e.target.value),
+    distinctUntilChanged(),
+    switchMap(fakeContinentsRequest),
+    tap(c => (document.getElementById('output').innerText = c.join('\n')))
+  )
+  .subscribe();

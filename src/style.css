@@ -2,12 +2,3 @@ body {
     font-family: sans-serif;
     padding: 10px;
 }
-h2 {
-    font-weight: bold;
-    display: inline-block;
-    margin-left: 20px;
-}
-.header {
-    background: #ECECEC;
-    padding: 5px;
-}
