@@ -3,30 +3,13 @@ body {
     padding: 10px;
 }
 
-.progress-container {
-  height: 2em;
-  border: 2px solid #FF00FF;
+#note-input {
   width: 100%;
+  margin-top: 10px;
 }
 
-.progress-container .progress {
-  height: 100%;
-  background-color: #FFFF00;
-  transition: all 0.6s ease;
-  width: 0px;
-}
-
-.progress-container .progress.finished {
-  background-color: #00FF00;
-}
-
-#load {
-  width: 50%;
-  margin: 1em 25%;
-}
-
-#data {
-  width: 100%;
-  margin: 1em 0;
-  text-align: center;
+.save-indicator {
+  display: flex;
+  flex-direction: row-reverse;
+  font-size: 11px;
 }
